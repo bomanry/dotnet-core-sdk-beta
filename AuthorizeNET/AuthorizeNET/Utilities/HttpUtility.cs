@@ -2,7 +2,6 @@
 {
 	using Api.Contracts.V1;
 	using Api.Controllers.Bases;
-	using Microsoft.Extensions.Logging;
 	using System;
 	using System.Net.Http;
 	using System.Text;
@@ -11,13 +10,13 @@
 	public static class HttpUtility
 	{
         
-		private static readonly ILogger Logger = LogFactory.getLog(typeof(HttpUtility));
+		//private static readonly ILogger Logger = LogFactory.getLog(typeof(HttpUtility));
 		private static bool _proxySet;
 
 		private static Uri GetPostUrl(AuthorizeNet.Environment env)
 		{
 			var postUrl = new Uri(env.XmlBaseUrl + "/xml/v1/request.api");
-			Logger.LogDebug("Creating PostRequest Url: '{0}'", postUrl);
+			//Logger.LogDebug("Creating PostRequest Url: '{0}'", postUrl);
 
 			return postUrl;
 		}
@@ -31,7 +30,7 @@
 			{
 				throw new ArgumentNullException("request");
 			}
-			Logger.LogDebug("MerchantInfo->LoginId/TransactionKey: '{0}':'{1}'->{2}", request.merchantAuthentication.name, request.merchantAuthentication.ItemElementName, request.merchantAuthentication.Item);
+			//Logger.LogDebug("MerchantInfo->LoginId/TransactionKey: '{0}':'{1}'->{2}", request.merchantAuthentication.name, request.merchantAuthentication.ItemElementName, request.merchantAuthentication.Item);
 
 			var postUrl = GetPostUrl(env);
 			
@@ -46,12 +45,12 @@
 					client.Timeout = TimeSpan.FromMilliseconds(httpConnectionTimeout != 0 ? httpConnectionTimeout : Constants.HttpConnectionDefaultTimeout);
 					var content = new StringContent(XmlUtility.Serialize(request), Encoding.UTF8, "text/xml");
 					var webResponse = client.PostAsync(postUrl, content).Result;
-					Logger.LogDebug("Retrieving Response from Url: '{0}'", postUrl);
+					//Logger.LogDebug("Retrieving Response from Url: '{0}'", postUrl);
 
 					// Get the response
-					Logger.LogDebug("Received Response: '{0}'", webResponse);
+					//Logger.LogDebug("Received Response: '{0}'", webResponse);
 					responseAsString = webResponse.Content.ReadAsStringAsync().Result;
-					Logger.LogDebug("Response from Stream: '{0}'", responseAsString);
+					//Logger.LogDebug("Response from Stream: '{0}'", responseAsString);
 
 				}
 			}
@@ -88,7 +87,7 @@
 				var proxyUri = new Uri(string.Format("{0}://{1}:{2}", Constants.ProxyProtocol, env.HttpProxyHost, env.HttpProxyPort));
 				if (!_proxySet)
 				{
-					Logger.LogInformation(string.Format("Setting up proxy to URL: '{0}'", proxyUri));
+					//Logger.LogInformation(string.Format("Setting up proxy to URL: '{0}'", proxyUri));
 					_proxySet = true;
 				}
 
